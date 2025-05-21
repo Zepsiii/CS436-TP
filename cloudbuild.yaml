@@ -7,6 +7,17 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/myapp-backend']
 
+
+  - name: 'gcr.io/cloud-builders/npm'
+    dir: 'client'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "REACT_APP_PUBLIC_FOLDER=http://34.23.127.50/images/" > .env
+        npm install
+        npm run build
+
   - name: 'gcr.io/cloud-builders/docker'
     args:
       ['build', '-t', 'gcr.io/$PROJECT_ID/myapp-frontend', '.']
